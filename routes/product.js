@@ -115,7 +115,7 @@ router.get("/getSimilar", async (req, res) => {
         })
         // console.log(words.data)
         let similarWords = words.data
-        similarWords.push(search)
+        // similarWords.push(search)
         console.log(similarWords)
         const map = new Map();
         let returnval = [];
