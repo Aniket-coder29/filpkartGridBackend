@@ -1,0 +1,37 @@
+we are going to create node js rest api and mongodb
+
+to initiate nodejs application
+npm init -y (npm init -y. will simply generate an empty npm project without going through an interactive process. The -y stands for yes )
+npm i express mongoose dotenv nodemon
+(dotenv secure data)
+
+to start application once - node index.js
+for continuous running of node application - nodemon index.js
+we can change in scripts in package.json :
+start:"nodemon index.js"
+thereafter just use npm start
+
+mongodb atlas-yashjaiswalecommerce(same password)
+'mongodb+srv://yashjaiswalecommerce:yashjaiswalecommerce@ecommerce.iwsissk.mongodb.net/shop?retryWrites=true&w=majority'
+can connect through vscode also
+
+we can save our hardcoded variables in .env file which can be access by dotenv
+
+first we need to define all the schemas under model
+then make routes for all api end points
+we are using cyptoJS for encrypting passwords-npm i crypto-js
+
+add more security - npm i jsonwebtoken
+provide user a web token on login
+
+
+after setting our rest api(Representational state transfer -an interface that two computer systems use to exchange information securely over the internet)
+
+we will add a payment method that's stripe
+get the secret key and add it in .env
+npm install stripe --save
+
+---------------------------------------
+we need to add return after every response to stop further execution - without it we are giving multiple response to single call on wrong password
+
+backend me const function/variables =require('path')    - aise import krte hai
