@@ -88,7 +88,7 @@ router.get("/", async (req, res) => {
 
 //search product
 
-router.get('/',async(req,res)=>{
+router.get('/', async (req, res) => {
     console.log('hii this is products')
     res.send('hii is this products')
 
@@ -108,21 +108,32 @@ router.get("/search", async (req, res) => {
 router.get("/getSimilar", async (req, res) => {
     const search = req.query.search;
     try {
-        let words = await axios.get(`http://127.0.0.1:8080/getRecommendation?search=${search}`,{
-            headers:{
-                'Content-Type':'application/json',
+        let words = await axios.get(`http://127.0.0.1:8080/getRecommendation?search=${search}`, {
+            headers: {
+                'Content-Type': 'application/json',
             }
         })
-        console.log(words.data)
+        // console.log(words.data)
         let similarWords = words.data
-        let returnval=[];
-        for(let e of similarWords){
-            const quer = await Product.find({ 'product_description': { $regex: e } });
+        similarWords.push(search)
+        console.log(similarWords)
+        const map = new Map();
+        let returnval = [];
+        for (let e of similarWords) {
+            const quer = await Product.find({ 'title': { $regex: e } });
+            for (let i of quer) {
+                // console.log(i)
+                if (!map.has(i.product_uid)) {
+                    map.set(i.product_uid, {status:true})
+                    returnval.push(i)
+                }
+            }
+            // console.log(map)
             // console.log(e)
             // console.log(...quer)
-            returnval.push(...quer)
+            // returnval.push(...quer)
         }
-        // console.log(returnval)
+        console.log(returnval.length)
         return res.status(200).json(returnval);
     } catch (error) {
         return res.status(500).json(error);
