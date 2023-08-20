@@ -1,6 +1,6 @@
 const Product = require("../models/Product");
 const { verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
-
+const axios = require('axios')
 const router = require("express").Router();
 
 // //CREATE 
@@ -107,16 +107,21 @@ router.get("/search", async (req, res) => {
 router.get("/getSimilar", async (req, res) => {
     const search = req.query.search;
     try {
-        
-        let similarWords = ["View","Fara"]
+        let words = await axios.get(`http://127.0.0.1:8080/getRecommendation?search=${search}`,{
+            headers:{
+                'Content-Type':'application/json',
+            }
+        })
+        console.log(words.data)
+        let similarWords = words.data
         let returnval=[];
         for(let e of similarWords){
-            const quer = await Product.find({ 'title': { $regex: e } });
-            console.log(e)
-            console.log(...quer)
+            const quer = await Product.find({ 'product_description': { $regex: e } });
+            // console.log(e)
+            // console.log(...quer)
             returnval.push(...quer)
         }
-        console.log(returnval)
+        // console.log(returnval)
         return res.status(200).json(returnval);
     } catch (error) {
         return res.status(500).json(error);
