@@ -45,46 +45,46 @@ const router = require("express").Router();
 //     }
 // })
 
-// //GET Product by id - 
-// router.get("/find/:id", async (req, res) => {
-//     try {
-//         const product = await Product.findById(req.params.id);
-//         return res.status(200).json(product);
-//     }
-//     catch (err) {
-//         return res.status(500).json(err);
-//     }
-// })
+//GET Product by id - 
+router.get("/find/:id", async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+        return res.status(200).json(product);
+    }
+    catch (err) {
+        return res.status(500).json(err);
+    }
+})
 
-// //fetch all products
-// router.get("/", async (req, res) => {
-//     const qNew = req.query.new;
-//     const qCategory = req.query.category;//can't pass both query at once
-//     try {
-//         let products;
-//         if (qNew) {
-//             products = await Product.find().sort({ createdAt: -1 }).limit(5);
-//             //if query has new then sort acc.to created date in desc order and limit 5 products
-//         }
-//         else if (qCategory) {
-//             products = await Product.find({
-//                 categories: {
-//                     $in: [qCategory],
-//                 },
-//             });
-//             //list all products that contains qCategory in their categories arrays
-//         }
-//         else {
-//             products = await Product.find();
-//             //else give all products
-//         }
+//fetch all products
+router.get("/", async (req, res) => {
+    const qNew = req.query.new;
+    const qCategory = req.query.category;//can't pass both query at once
+    try {
+        let products;
+        if (qNew) {
+            products = await Product.find().sort({ createdAt: -1 }).limit(15);
+            //if query has new then sort acc.to created date in desc order and limit 5 products
+        }
+        else if (qCategory) {
+            products = await Product.find({
+                categories: {
+                    $in: [qCategory],
+                },
+            });
+            //list all products that contains qCategory in their categories arrays
+        }
+        else {
+            products = await Product.find();
+            //else give all products
+        }
 
-//         return res.status(200).json(products);//fetch user and return it 
-//     }
-//     catch (err) {
-//         return res.status(500).json(err);
-//     }
-// });
+        return res.status(200).json(products);//fetch user and return it 
+    }
+    catch (err) {
+        return res.status(500).json(err);
+    }
+});
 
 //search product
 
@@ -98,6 +98,7 @@ router.get("/search", async (req, res) => {
     const search = req.query.search;
     try {
         const quer = await Product.find({ 'product_description': { $regex: search } })
+        console.log(quer.length)
         return res.status(200).json(quer);
     } catch (error) {
         return res.status(500).json(error);
