@@ -107,15 +107,15 @@ router.get("/search", async (req, res) => {
 router.get("/getSimilar", async (req, res) => {
     const search = req.query.search;
     try {
-        const similarWords = ["View","Fara"]
-        var returnval=[];
-        await similarWords.map(async(e)=>{
+        
+        let similarWords = ["View","Fara"]
+        let returnval=[];
+        for(let e of similarWords){
             const quer = await Product.find({ 'title': { $regex: e } });
             console.log(e)
             console.log(...quer)
             returnval.push(...quer)
-            // returnval=[...returnval,...quer];
-        })
+        }
         console.log(returnval)
         return res.status(200).json(returnval);
     } catch (error) {
